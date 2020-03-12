@@ -96,4 +96,16 @@ public interface GpuPluginConfig extends Config
 	{
 		return 0;
 	}
+
+	@ConfigItem(
+			keyName = "useCompute",
+			name = "Use Compute Shaders",
+			description = "Enables/Disables the usage of compute shaders, requires plugin restart.",
+			position = 6
+	)
+	default boolean useCompute()
+	{
+		return true;
+	}
+
 }

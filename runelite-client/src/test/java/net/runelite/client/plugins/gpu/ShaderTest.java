@@ -51,7 +51,7 @@ public class ShaderTest
 		String verifier = System.getProperty("glslang.path");
 		Assume.assumeFalse("glslang.path is not set", Strings.isNullOrEmpty(verifier));
 
-		Template[] templates = {
+		/*Template[] templates = {
 			new Template()
 				.addInclude(GpuPlugin.class)
 				.add(key ->
@@ -78,7 +78,7 @@ public class ShaderTest
 			{
 				verify(t, s);
 			}
-		}
+		}*/
 	}
 
 	private void verify(Template template, Shader shader) throws Exception

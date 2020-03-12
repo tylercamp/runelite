@@ -24,6 +24,7 @@
  */
 package net.runelite.api.hooks;
 
+import net.runelite.api.Model;
 import net.runelite.api.Renderable;
 import net.runelite.api.SceneTileModel;
 import net.runelite.api.SceneTilePaint;
