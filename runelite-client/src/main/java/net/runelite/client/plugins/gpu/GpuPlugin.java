@@ -1520,32 +1520,40 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	@Subscribe
 	public void onCanvasSizeChanged(CanvasSizeChanged event)
 	{
-		//	Wait 1 client tick before recreating the context
-		//	This prevents unnecessary processing and over/under scaling of the context
+        //Mac specific scaling workaround
+        if(OSType.getOSType() == OSType.MacOS)
+        {
+            //	Wait 1 client tick before recreating the context
+            //	This prevents unnecessary processing and over/under scaling of the context
+            resizeTimer.cancel();
+            resizeTimer = new Timer();
 
-		resizeTimer.cancel();
-		resizeTimer = new Timer();
-
-		resizeTimer.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				update();
-				// The client will always fire atleast 1 onCanvasSizeChanged event on boot
-				// These dont require reloading the textures
-				if(!firstResize) {
-					//Wait 1 second before reloading textures, its a safe assumption the user is done resizing at this point
-					textureTimer.cancel();
-					textureTimer = new Timer();
-					textureTimer.schedule(new TimerTask() {
-						@Override
-						public void run() {
-							textureArrayId = -1;
-						}
-					}, 1000L);
-				}
-				firstResize = false;
-			}
-		}, 20L);
+            resizeTimer.schedule(new TimerTask()
+            {
+                @Override
+                public void run()
+                {
+                    update();
+                    // The client will always fire atleast 1 onCanvasSizeChanged event on boot
+                    // These dont require reloading the textures
+                    if (!firstResize)
+                    {
+                        //Wait 1 second before reloading textures, its a safe assumption the user is done resizing at this point
+                        textureTimer.cancel();
+                        textureTimer = new Timer();
+                        textureTimer.schedule(new TimerTask()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                textureArrayId = -1;
+                            }
+                        }, 1000L);
+                    }
+                    firstResize = false;
+                }
+            }, 20L);
+        }
 	}
 
 	private void update()
